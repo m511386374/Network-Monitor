@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 
 import java.net.Inet4Address;
 import java.net.InetAddress;
@@ -13,7 +14,6 @@ import java.util.Enumeration;
 
 /**
  * Created by kince on 16-8-24.
- *
  */
 public class NetworkManager {
 
@@ -101,7 +101,7 @@ public class NetworkManager {
     private NetworkCheck mOnlineChecker;
     private NetworkMonitor mNetworkMonitor;
 
-    private NetworkManager(){
+    private NetworkManager() {
     }
 
     public static NetworkManager getInstance() {
@@ -117,6 +117,7 @@ public class NetworkManager {
 
     /**
      * Initializes NetworkEvents object.
+     *
      * @param context
      */
     public void initialized(Context context) {
@@ -129,8 +130,8 @@ public class NetworkManager {
      * Sets ping parameters of the host used to check Internet connection.
      * If it's not set, library will use default ping parameters.
      *
-     * @param host host to be pinged
-     * @param port port of the host
+     * @param host        host to be pinged
+     * @param port        port of the host
      * @param timeoutInMs timeout in milliseconds
      * @return NetworkEvents object
      */
@@ -146,7 +147,8 @@ public class NetworkManager {
      */
     public void register(NetworkObserver observer) {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+        intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
         mContext.registerReceiver(mNetworkMonitor, intentFilter);
         mNetworkMonitor.registerNetworkObserver(observer);
     }
@@ -231,7 +233,7 @@ public class NetworkManager {
                     return NetworkType.MOBILE4G;
             }
             return NetworkType.MOBILE_CONNECTED;//未知的移动网络
-        }else if (netWorkInfo != null && netWorkInfo.getType() == ConnectivityManager.TYPE_WIFI){
+        } else if (netWorkInfo != null && netWorkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
             return NetworkType.WIFI_CONNECTED;
         }
         return NetworkType.OFFLINE;//no network
@@ -253,6 +255,17 @@ public class NetworkManager {
     public static String getTypeName(Context context) {
         NetworkInfo net = NetworkManager.getCurrentActiveNetwork(context);
         return net != null ? net.getTypeName() : null;
+    }
+
+    /**
+     * @param context
+     * @return
+     */
+    public static WifiSignalLevel getWifiSignalLevel(Context context) {
+        final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        final int rssi = wifiManager.getConnectionInfo().getRssi();
+        final int level = WifiManager.calculateSignalLevel(rssi, WifiSignalLevel.getMaxLevel());
+        return WifiSignalLevel.fromLevel(level);
     }
 
     /**

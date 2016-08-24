@@ -19,11 +19,14 @@ public abstract class NetworkObserver implements Observer {
     public abstract void onNetworkStateChanged(NetAction action);
 
     public static class NetAction {
-        private NetworkType type;
 
-        public NetAction( NetworkType type) {
+        private NetworkType type;
+        private WifiSignalLevel wifiSignalLevel;
+
+        public NetAction(NetworkType type,WifiSignalLevel wifiSignalLevel) {
             super();
             this.type = type;
+            this.wifiSignalLevel = wifiSignalLevel;
         }
 
         public NetworkType getType() {
@@ -32,6 +35,14 @@ public abstract class NetworkObserver implements Observer {
 
         public void setType(NetworkType type) {
             this.type = type;
+        }
+
+        public WifiSignalLevel getWifiSignalLevel() {
+            return wifiSignalLevel;
+        }
+
+        public void setWifiSignalLevel(WifiSignalLevel wifiSignalLevel) {
+            this.wifiSignalLevel = wifiSignalLevel;
         }
     }
 

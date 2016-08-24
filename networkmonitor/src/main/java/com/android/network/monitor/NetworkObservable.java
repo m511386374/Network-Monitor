@@ -23,7 +23,9 @@ public class NetworkObservable extends Observable {
     public void addObserver(Observer observer) {
         try {
             super.addObserver(observer);
-            observer.update(this, new NetworkObserver.NetAction(NetworkManager.getNetworkType(context)));
+            NetworkType networkType = NetworkManager.getNetworkType(context);
+            WifiSignalLevel wifiSignalLevel = NetworkManager.getWifiSignalLevel(context);
+            observer.update(this, new NetworkObserver.NetAction(networkType, wifiSignalLevel));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -11,13 +11,16 @@ import com.hanks.htextview.HTextViewType;
 
 public class MainActivity extends AppCompatActivity {
 
-    private HTextView mHTextView;
+    private HTextView mNetworkTextView;
+    private HTextView mSignalTextView;
 
     private NetworkObserver mNetworkObserver = new NetworkObserver() {
         @Override
         public void onNetworkStateChanged(NetworkObserver.NetAction action) {
             Log.i(MainActivity.class.getSimpleName(), "网络可用 > " + "网络类型:" + action.getType().toString());
-            mHTextView.animateText(action.getType().toString());
+            Log.i(MainActivity.class.getSimpleName(), "网络可用 > " + "网络质量:" + action.getWifiSignalLevel().toString());
+            mNetworkTextView.animateText(action.getType().toString());
+            mSignalTextView.animateText(action.getWifiSignalLevel().toString());
         }
     };
 
@@ -26,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mHTextView = (HTextView) findViewById(R.id.text);
-        mHTextView.setAnimateType(HTextViewType.LINE);
+        mNetworkTextView = (HTextView) findViewById(R.id.network);
+        mSignalTextView =  (HTextView) findViewById(R.id.signal);
+        mNetworkTextView.setAnimateType(HTextViewType.LINE);
+        mSignalTextView.setAnimateType(HTextViewType.LINE);
 
         NetworkManager.getInstance().initialized(this);
         NetworkManager.getInstance().register(this.mNetworkObserver);

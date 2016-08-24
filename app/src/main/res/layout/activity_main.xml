@@ -10,12 +10,21 @@
     tools:context="com.android.network.monitor.simple.MainActivity">
 
     <com.hanks.htextview.HTextView
-        android:id="@+id/text"
+        android:id="@+id/network"
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:gravity="center"
         android:textColor="@android:color/black"
         android:textSize="30sp"/>
+
+    <com.hanks.htextview.HTextView
+        android:id="@+id/signal"
+        android:layout_below="@id/network"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:textColor="@android:color/black"
+        android:textSize="15sp"/>
 
     <TextView
         android:layout_alignParentBottom="true"

@@ -18,7 +18,7 @@ public class NetworkMonitor extends BroadcastReceiver {
         this.notifyNetState(context);
     }
 
-    public NetworkMonitor(Context context){
+    public NetworkMonitor(Context context) {
         this.observable = new NetworkObservable(context);
     }
 
@@ -42,7 +42,9 @@ public class NetworkMonitor extends BroadcastReceiver {
 
     private void notifyNetState(Context context) {
         try {
-            this.observable.notifyObservers(new NetworkObserver.NetAction(NetworkManager.getNetworkType(context)));
+            NetworkType networkType = NetworkManager.getNetworkType(context);
+            WifiSignalLevel wifiSignalLevel = NetworkManager.getWifiSignalLevel(context);
+            this.observable.notifyObservers(new NetworkObserver.NetAction(networkType, wifiSignalLevel));
         } catch (Exception e) {
             e.printStackTrace();
         }
