@@ -31,4 +31,6 @@ dependencies {
     compile 'com.novoda:merlin:0.8.0'
     compile 'com.android.support:design:24.2.0'
     compile project(path: ':networkmonitor')
+
+    compile 'hanks.xyz:htextview-library:0.1.5'
 }
