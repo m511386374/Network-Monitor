@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.android.network.monitor.NetworkAction;
 import com.android.network.monitor.NetworkManager;
 import com.android.network.monitor.NetworkObserver;
 import com.hanks.htextview.HTextView;
@@ -15,13 +16,15 @@ public class MainActivity extends AppCompatActivity {
     private HTextView mSignalTextView;
 
     private NetworkObserver mNetworkObserver = new NetworkObserver() {
+
         @Override
-        public void onNetworkStateChanged(NetworkObserver.NetAction action) {
+        public void onNetworkStateChanged(NetworkAction action) {
             Log.i(MainActivity.class.getSimpleName(), "网络可用 > " + "网络类型:" + action.getType().toString());
             Log.i(MainActivity.class.getSimpleName(), "网络可用 > " + "网络质量:" + action.getWifiSignalLevel().toString());
             mNetworkTextView.animateText(action.getType().toString());
             mSignalTextView.animateText(action.getWifiSignalLevel().toString());
         }
+
     };
 
     @Override

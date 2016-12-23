@@ -99,7 +99,9 @@ public class NetworkManager {
     private static volatile NetworkManager instance = null;
     private Context mContext;
     private NetworkCheck mOnlineChecker;
-    private NetworkMonitor mNetworkMonitor;
+    private NetworkReceiver mNetworkReceiver;
+    private NetworkObservable mNetworkObservable;
+    private boolean mInitialized = false;
 
     private NetworkManager() {
     }
@@ -122,8 +124,12 @@ public class NetworkManager {
      */
     public void initialized(Context context) {
         mContext = context;
-        mOnlineChecker = new NetworkCheck(context);
-        mNetworkMonitor = new NetworkMonitor(context);
+        if(!mInitialized) {
+            mNetworkObservable = new NetworkObservable(context);
+            mOnlineChecker = new NetworkCheck(context);
+            mNetworkReceiver = new NetworkReceiver(mNetworkObservable);
+            mInitialized = true;
+        }
     }
 
     /**
@@ -149,8 +155,8 @@ public class NetworkManager {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
         intentFilter.addAction(WifiManager.RSSI_CHANGED_ACTION);
-        mContext.registerReceiver(mNetworkMonitor, intentFilter);
-        mNetworkMonitor.registerNetworkObserver(observer);
+        mContext.registerReceiver(mNetworkReceiver, intentFilter);
+        mNetworkReceiver.registerNetworkObserver(observer);
     }
 
     /**
@@ -159,8 +165,11 @@ public class NetworkManager {
      * or during destroying instance of class extending Application.
      */
     public void unregister(NetworkObserver observer) {
-        mContext.unregisterReceiver(mNetworkMonitor);
-        mNetworkMonitor.unregisterNetworkObserver(observer);
+        try {
+            mContext.unregisterReceiver(mNetworkReceiver);
+            mNetworkReceiver.unregisterNetworkObserver(observer);
+        } catch (Exception e) {
+        }
     }
 
     /**
