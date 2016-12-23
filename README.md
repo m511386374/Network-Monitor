@@ -42,7 +42,7 @@
         NetMonitor.getInstance().delObserver(this.mNetObserver);
     }
 ```
-https://github.com/Geekince/Network-Monitor/blob/master/art/network_monitor.gif
+![20160713103120.png](art/network_monitor.gif)
 
 PS:
 NetApplication主要是内部初始化广播监听者,如果广播接收者收到了网络变化广播,就会解析当前具体网络类型,然后通知被观察者(Observable),被观察者通知所有观察者网络有变化了和当前网络类型,这里枚举了6种类型:
