@@ -17,8 +17,6 @@ import java.util.Enumeration;
  */
 public class NetworkManager {
 
-    private static final String TAG = "NetworkManager";
-
     /**
      * NetworkManager type is unknown
      */

@@ -10,8 +10,6 @@ import android.net.ConnectivityManager;
  */
 public class NetworkReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "NetworkReceiver";
-
     private NetworkObservable mObservable;
 
     @Override

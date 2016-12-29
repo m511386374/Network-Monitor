@@ -11,7 +11,6 @@ import java.util.Observer;
  */
 public class NetworkObservable extends Observable {
 
-    private static final String TAG = "NetworkObservable";
     private Context context;
 
     public NetworkObservable(Context context) {

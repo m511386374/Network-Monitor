@@ -9,8 +9,6 @@ import java.util.Observer;
  */
 public abstract class NetworkObserver implements Observer {
 
-    private static final String TAG = "NetworkObserver";
-
     @Override
     public void update(Observable observable, Object o) {
         this.onNetworkStateChanged(((NetworkAction) o));
